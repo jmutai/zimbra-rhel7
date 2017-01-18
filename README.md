@@ -1,6 +1,6 @@
 ## Zimbra on RHEL 7 Docker image
 
-This repo hosts all files needed to run Zimbra Collaborative Suite on RHEL 7 docker image.
+This repository contains different Zimbra scripts to create RHEL 7 Zimbra Collaboration docker image.
 
 Kindly note that this is a work in progess. If you get any errors be kind and share them so that i can improve on it.
 
@@ -29,8 +29,21 @@ tree
 ├── ZimbraEasyInstall
 └── zimbra.repo
 ```
+## Usage and Examples
 
-First clone the repo:
+`1.` First clone the repo:
 
 ```bash
+git@github.com:jmutai/zimbra-rhel7.git
+```
+`.2`. Then cd to `zimbra-rhel7` directory
+
+```
+cd zimbra-rhel7
+```
+`3.` Then download latest Zimbra Collaboration  software. I'll download Open Source edition here.
+
+```
+wget -O opt/zimbra-install/zcs-rhel7.tgz  https://files.zimbra.com/downloads/8.7.1_GA/zcs-8.7.1_GA_1670.RHEL7_64.20161025045328.tgz
+```
 

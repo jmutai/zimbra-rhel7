@@ -148,7 +148,7 @@ If you aren't using zimbra local repo remove the line `-v ./zimbra.repo:/etc/yum
 
 [How to Create Local Zimbra Repository](https://wiki.zimbra.com/wiki/Zimbra_Collaboration_repository) 
 
-Then run new zimbra container:
+Spin new zimbra container:
 
 ```
 sh ./run.sh
@@ -165,13 +165,12 @@ Alternatively you can just do:
 ```bash
 sh ./shell.sh
 ```
-Once you have active shell access. Do the following to install zimbra.
+Once you have active shell access. Start automated zimbra installation.
 
 ```
 cd /opt
 sh ./start.sh 
 ```
-Wait for the installation to finish.
 
 ## Accessing Admin Console
 The `start.sh` script will take care of everything and after a few minutes you can access Admin console using:

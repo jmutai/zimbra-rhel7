@@ -1,8 +1,8 @@
 ## Zimbra on RHEL 7 Docker image
 
-This repository contains different Zimbra scripts to create RHEL 7 Zimbra Collaboration docker image.
+This repository contains different scripts to create RHEL 7 Zimbra docker image.
 
-Kindly note that this is a work in progess. If you get any errors be kind and share them so that i can improve on it.
+It tries to automate zimbra installation on a Docker. If you get any errors be kind and share them so that i can improve on it.
 
 ## How to use files in this repo?
 
@@ -97,6 +97,8 @@ y
 y
 y
 ```
+Edit `zimbra.repo` to point to correct base repo url in case you've local repository alreasy setup.
+
 Then create the image:
 
 ```
@@ -152,7 +154,7 @@ sh ./run.sh
 ```
 This will launch a container called `zimbra` in detached mode. We're detaching because the default command running is `/usr/sbin/init`, you cannot attach tty terminal.
 
-`7.` Before you start zimbra installation, attach to `zimbra` container interactive terminal and execute `/bin/bash`.
+`7.` Before starting zimbra installation, attach to `zimbra` container interactive terminal and execute `/bin/bash`.
 
 ```
 docker exec -it zimbra /bin/bash
@@ -173,5 +175,5 @@ Wait for the installation to finish.
 ## Accessing Admin Console
 The `start.sh` script will take care of everything and after a few minutes you can access Admin console using:
 
-Admin Console - https://YOURIP:7071
+Admin Console - https://YOUR_HOST_IP:7071
 

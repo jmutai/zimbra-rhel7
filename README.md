@@ -9,7 +9,6 @@ It tries to automate zimbra installation on Docker. If you get any errors be kin
 Below is the directory tree structure for the repo:
 
 ```bash
-tree
 .
 ├── Dockerfile
 ├── etc

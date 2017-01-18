@@ -34,9 +34,9 @@ tree
 `1.` First clone the repo:
 
 ```bash
-git@github.com:jmutai/zimbra-rhel7.git
+git clone https://github.com/jmutai/zimbra-rhel7.git
 ```
-`.2`. Then cd to `zimbra-rhel7` directory
+`2`. Then cd to `zimbra-rhel7` directory
 
 ```
 cd zimbra-rhel7
@@ -46,4 +46,26 @@ cd zimbra-rhel7
 ```
 wget -O opt/zimbra-install/zcs-rhel7.tgz  https://files.zimbra.com/downloads/8.7.1_GA/zcs-8.7.1_GA_1670.RHEL7_64.20161025045328.tgz
 ```
+`4.` Edit `Makefile` if you would like to change name of the base image to build next.
 
+```
+$ cat  Makefile 
+
+IMAGE=zimbra-rhel-base
+
+.PHONY: all build
+
+all: build
+
+build:
+    docker build --rm -t $(IMAGE) .
+```
+`5.` Build base image which is image with zimbra preqs packages.
+
+Before running `sudo make`, consider changing hostname on `setup.sh` file to match final hostname you'll use.
+
+If you plan on using `CentOS 7` docker image, change `FROM` directive in `Dockerfile` to match `centos:latest`. Default is `rhel7.3` from `registry.access.redhat.com`.
+
+```
+sudo make
+```

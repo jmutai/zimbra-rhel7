@@ -27,9 +27,9 @@ Below is the directory tree structure for the repo:
 ├── shell.sh
 └── zimbra.repo
 ```
-## Usage and Examples
 
-First create docker use-defined network for zimbra. This will enable us to define `ip address` assigned to the container. On my setup, the bridge created is `zimbra_bridge`, network subnet is '192.168.2.0/24' using below command:
+## Prereqs
+First create use-defined docker network for zimbra. This will enable us to define an `ip address` to assigned to the container. On my setup, the bridge created is `zimbra_bridge`, network subnet is `192.168.2.0/24` using below command:
 
 ```
 # docker network create -d bridge --subnet 192.168.2.0/24 zibra_bridge
@@ -38,12 +38,15 @@ Confirm the network is successfully created with:
 
 ```
 # docker network ls
+
 NETWORK ID          NAME                DRIVER
 f16cc34759a8        none                null                
 cd4f9b056c74        host                host                
 6fdeb55834bf        bridge              bridge              
 8c67bf16fc36        zimbra_bridge       bridge 
 ```
+
+## Usage and Examples
 
 `1.` First clone the repo:
 
@@ -55,7 +58,7 @@ git clone https://github.com/jmutai/zimbra-rhel7.git
 ```
 cd zimbra-rhel7
 ```
-`3.` Then download latest Zimbra Collaboration  software. I'll download Open Source edition here.
+`3.` Download latest Zimbra Collaboration  software. I'll download Open Source edition here.
 
 ```
 wget -O opt/zimbra-install/zcs-rhel7.tgz  https://files.zimbra.com/downloads/8.7.1_GA/zcs-8.7.1_GA_1670.RHEL7_64.20161025045328.tgz
@@ -77,7 +80,7 @@ sed -i 's/^FROM .*$/FROM centos:latest/' Dockerfile
 ```
 Default is `rhel7.3` from `registry.access.redhat.com`.
 
-On `opt/zimbra-install/zimbra_install_keystrokes` file. replace second line `y` with `n` if you'll be using local repository to install zimbra. To look like below:
+**If using Local repo**: On `opt/zimbra-install/zimbra_install_keystrokes` file, replace second line `y` with `n`. To look like below:
 
 ```
 $ cat opt/zimbra-install/zimbra_install_keystrokes
@@ -95,9 +98,9 @@ y
 y
 y
 ```
-Edit `zimbra.repo` to point to correct base repo url in case you've local repository alreasy setup.
+Then edit `zimbra.repo` to point to correct base repo url.
 
-Then create the image:
+It's now time to create zimbra base image:
 
 ```
 sudo make

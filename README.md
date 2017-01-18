@@ -2,7 +2,7 @@
 
 This repository contains different scripts to create RHEL 7 Zimbra docker image.
 
-It tries to automate zimbra installation on a Docker. If you get any errors be kind and share them so that i can improve on it.
+It tries to automate zimbra installation on Docker. If you get any errors be kind and share them so that i can improve on it.
 
 ## How to use files in this repo?
 
@@ -26,7 +26,6 @@ tree
 ├── run.sh
 ├── setup.sh
 ├── shell.sh
-├── ZimbraEasyInstall
 └── zimbra.repo
 ```
 ## Usage and Examples

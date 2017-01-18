@@ -1,17 +1,12 @@
 #!/bin/sh
-## Preparing all the variables like IP, Hostname, etc, all of them from the container
 sleep 5
-#PASSWORD="Password@123"
-#HOSTNAME=$(hostname -s)
-#DOMAIN=$(hostname -d)
-#CONTAINERIP=$(ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1  -d'/')
-
 RANDOMHAM=$(date +%s|sha256sum|base64|head -c 10)
 RANDOMSPAM=$(date +%s|sha256sum|base64|head -c 10)
 RANDOMVIRUS=$(date +%s|sha256sum|base64|head -c 10)
 
 ## Installing the DNS Server ##
 echo "Configuring DNS Server"
+sleep 3
 mv /var/named/db.domain /var/named/db.$DOMAIN
 
 sed -i 's/\$DOMAIN/'$DOMAIN'/g' \
@@ -27,6 +22,8 @@ nameserver 127.0.0.1
 options ndots:0
 EOF
 
+echo "Restarting bind name server.."
+sleep 3
 sudo systemctl restart named 
 
 ## Install the Zimbra Collaboration ##
@@ -140,13 +137,15 @@ EOF
 echo "Installing Zimbra Collaboration injecting the configuration"
 /opt/zimbra/libexec/zmsetup.pl -c /opt/zimbra-install/zimbra_install_config
 
+echo "Now restarting zimbra"
+sleep 5
 su - zimbra -c 'zmcontrol restart'
 
 if [ "$?" -eq 0 ]; then
     echo "Installation successful"
     echo ""
-echo "You can access now to your Zimbra Collaboration Server"
-echo "Admin Console: https://"$HOSTNAME.$DOMAIN":7071"
-echo "Web Client: https://"$HOSTNAME.$DOMAIN"
+    echo "You can access now to your Zimbra Collaboration Server"
+    echo "Admin Console: https://${HOSTNAME}.${DOMAIN}:7071"
+    echo "Web Client: https://${HOSTNAME}.${DOMAIN}"
 fi
 

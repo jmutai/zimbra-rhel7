@@ -31,10 +31,10 @@ tree
 ```
 ## Usage and Examples
 
-First create docker use-defined network for zimbra. This will enable us to define `ip address` assigned to the container. On my setup, the bridge created is `zimbra_bridge`, network subnet is '192.168.10.0/24' using below command:
+First create docker use-defined network for zimbra. This will enable us to define `ip address` assigned to the container. On my setup, the bridge created is `zimbra_bridge`, network subnet is '192.168.2.0/24' using below command:
 
 ```
-# docker network create -d bridge --subnet 192.168.10.0/24 zibra_bridge
+# docker network create -d bridge --subnet 192.168.2.0/24 zibra_bridge
 ```
 Confirm the network is successfully created with:
 
@@ -68,66 +68,18 @@ wget -O opt/zimbra-install/zcs-rhel7.tgz  https://files.zimbra.com/downloads/8.7
 sed -i 's/^IMAGE=.*/IMAGE=new-image-name/g' Makefile 
 ```
 
-`5.` Build base image which is image with zimbra preqs packages.
+`5.` Build zimbra base image - Will be the basis for spinning new container.
 
-Before running `sudo make`, consider changing hostname on `setup.sh` file to match final hostname you'll use.
+Before running `sudo make`, consider changing **hostname** on `setup.sh` file to match final hostname you'll use.
 
-If you plan on using `CentOS 7` docker image, change `FROM` directive in `Dockerfile` to match `centos:latest`.
+If you plan on using **CentOS 7** docker image, change `FROM` directive in `Dockerfile` to match `centos:latest`.
 
 ```
 sed -i 's/^FROM .*$/FROM centos:latest/' Dockerfile
 ```
 Default is `rhel7.3` from `registry.access.redhat.com`.
 
-
-```
-sudo make
-```
-
-`6.` After successful build, Spin a container off the new zimbra base image, see below `run.sh` file for commands to use:
-
-```bash
-$ cat run.sh 
-
-#!/bin/bash
-local CONT_NAME="zimbra-rhel7"
-local CONT_DOMAIN="example.com"
-local CONT_S_HOSTNAME="mail"
-local CONT_BRIDGE="zimbra_bridge"
-local CONT_IP="192.168.10.2"
-local CONT_L_HOSTNAME="mail.example.com"
-local ZIMBRA_PASS="Password321"
-
-docker run -d --privileged \
-    --name "${CONT_NAME}" \
-    --hostname "${CONT_L_HOSTNAME}" \
-    --net "${CONT_BRIDGE}" \
-    --ip "${CONT_IP}" \
-    -e TERM="xterm" \
-    -e "container=docker" \
-    -e PASSWORD="${ZIMBRA_PASS}" \
-    -e HOSTNAME="${CONT_S_HOSTNAME}" \
-    -e DOMAIN="${CONT_DOMAIN}" \
-    -e CONTAINERIP="${CONT_IP}" \
-    -e NAME="${CONT_NAME}" \
-    -v /var/"${CONT_L_HOSTNAME}"/opt:/opt/zimbra  \
-    -v /etc/localtime:/etc/localtime:ro \
-    -v /sys/fs/cgroup:/sys/fs/cgroup:ro \
-    -v ./zimbra.repo:/etc/yum.repos.d/zimbra.repo \
-    -p 25:25 -p 80:80 -p 465:465 -p 587:587 \
-    -p 110:110 -p 143:143 -p 993:993 -p 995:995 \
-    -p 443:443 -p 8080:8080 -p 8443:8443 \
-    -p 7071:7071 -p 9071:9071 \
-    zimbra-rhel-base \
-    /usr/sbin/init
-```
-Change local variables set on top to suite your environemnt. 
-
-If you aren't using zimbra local repo remove the line `-v ./zimbra.repo:/etc/yum.repos.d/zimbra.repo`. It might be good idea to setup local repository if playing with docker for the first time; Will save you a lot of time if you screw things up. Visit link below for how to.
-
-[How to Create Local Zimbra Repository](https://wiki.zimbra.com/wiki/Zimbra_Collaboration_repository) 
-
-On `opt/zimbra-install/zimbra_install_keystrokes` file. replace second line `y` with `n` if you're using local repository. To look like below:
+On `opt/zimbra-install/zimbra_install_keystrokes` file. replace second line `y` with `n` if you'll be using local repository to install zimbra. To look like below:
 
 ```
 $ cat opt/zimbra-install/zimbra_install_keystrokes
@@ -145,4 +97,81 @@ y
 y
 y
 ```
+Then create the image:
+
+```
+sudo make
+```
+
+`6.` After successful build, Spin a container off the new zimbra base image, see below `run.sh` file for commands to use:
+
+```bash
+$ cat run.sh 
+
+#!/bin/bash
+CONT_NAME="zimbra"
+CONT_DOMAIN="example.com"
+CONT_S_HOSTNAME="mail"
+CONT_L_HOSTNAME="mail.example.com"
+CONT_BRIDGE="zimbra_bridge"
+CONT_IP="192.168.2.2"
+ZIMBRA_PASS="Password321"
+docker run -d --privileged \
+    --name "${CONT_NAME}" \
+    --hostname zimbra.example.com \
+    --net "${CONT_BRIDGE}" \
+    --ip "${CONT_IP}" \
+    -e TERM="xterm" \
+    -e "container=docker" \
+    -e PASSWORD="${ZIMBRA_PASS}" \
+    -e HOSTNAME="${CONT_S_HOSTNAME}" \
+    -e DOMAIN="${CONT_DOMAIN}" \
+    -e CONTAINERIP="${CONT_IP}" \
+    -e NAME="${CONT_NAME}" \
+    -v /var/"${CONT_L_HOSTNAME}"/opt:/opt/zimbra  \
+    -v /etc/localtime:/etc/localtime:ro \
+    -v /sys/fs/cgroup:/sys/fs/cgroup:ro \
+    -v $(pwd)/zimbra.repo:/etc/yum.repos.d/zimbra.repo \
+    -p 25:25 -p 80:80 -p 465:465 -p 587:587 \
+    -p 110:110 -p 143:143 -p 993:993 -p 995:995 \
+    -p 443:443 -p 8080:8080 -p 8443:8443 \
+    -p 7071:7071 -p 9071:9071 \
+    zimbra-rhel-base \
+    /usr/sbin/init
+```
+Change local variables set on top to suite your environemnt. 
+
+If you aren't using zimbra local repo remove the line `-v ./zimbra.repo:/etc/yum.repos.d/zimbra.repo`. It might be good idea to setup local repository if playing with docker for the first time; Will save you a lot of time if you screw things up. Visit link below for how to.
+
+[How to Create Local Zimbra Repository](https://wiki.zimbra.com/wiki/Zimbra_Collaboration_repository) 
+
+Then run new zimbra container:
+
+```
+sh ./run.sh
+```
+This will launch a container called `zimbra` in detached mode. We're detaching because the default command running is `/usr/sbin/init`, you cannot attach tty terminal.
+
+`7.` Before you start zimbra installation, attach to `zimbra` container interactive terminal and execute `/bin/bash`.
+
+```
+docker exec -it zimbra /bin/bash
+```
+Alternatively you can just do:
+
+```bash
+sh ./shell.sh
+```
+Once you have active shell access. Do the following to install zimbra.
+
+```
+cd /opt
+sh ./start.sh 
+```
+Wait for the installation to finish.
+
+## Accessing Admin Console
+The `start.sh` script will take care of everything and after a few minutes you can access Admin console using:
+
+Admin Console - https://YOURIP:7071
 

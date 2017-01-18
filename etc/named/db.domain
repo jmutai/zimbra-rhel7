@@ -1,0 +1,23 @@
+$TTL  1D
+@      IN      SOA    ns1.$DOMAIN. root.localhost. (
+                        0  	  ; Serial
+                        1D        ; Refresh
+                        1H        ; Retry
+                        1W        ; Expire
+                        3H        ; Negative Cache TTL
+)
+
+@     IN      NS      ns1.$DOMAIN.
+
+@     IN      A       $CONTAINERIP
+
+@     IN      MX     10     mail.$DOMAIN.
+
+$HOSTNAME     IN      A      $CONTAINERIP
+ns1      IN      A      $CONTAINERIP
+mail     IN      A      $CONTAINERIP
+pop3     IN      A      $CONTAINERIP
+imap     IN      A      $CONTAINERIP
+imap4    IN      A      $CONTAINERIP
+smtp     IN      A      $CONTAINERIP
+

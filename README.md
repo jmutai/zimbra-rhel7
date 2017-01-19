@@ -29,7 +29,7 @@ Below is the directory tree structure for the repo:
 ```
 
 ## Prereqs
-First create use-defined docker network for zimbra. This will enable us to define an `ip address` to assigned to the container. On my setup, the bridge created is `zimbra_bridge`, network subnet is `192.168.2.0/24` using below command:
+First create use-defined docker network for zimbra. This will enable us to define an `ip address` for the container. On my setup, the bridge created is `zimbra_bridge`, network subnet is `192.168.2.0/24` using below command:
 
 ```
 # docker network create -d bridge --subnet 192.168.2.0/24 zibra_bridge
@@ -173,7 +173,7 @@ sh ./start.sh
 ```
 
 ## Accessing Admin Console
-The `start.sh` script will take care of everything and after a few minutes you can access Admin console using:
+The `start.sh` script will take care of everything and after a few minutes you can access Admin console and client console as below:
 
-Admin Console - https://YOUR_HOST_IP:7071
-
+Admin Console: https://YOUR_HOST_IP:7071
+Client console: https://YOUR_HOST_IP

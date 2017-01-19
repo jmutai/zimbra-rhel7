@@ -9,7 +9,7 @@ systemctl start sshd
 echo "Starting and enabling rsyslog"
 sleep 5
 systemctl enable rsyslog
-systemctl start rsuslog
+systemctl start rsyslog
 
 echo "Generating some variables needed.."
 sleep 5
@@ -135,7 +135,7 @@ zimbraFeatureBriefcasesEnabled="Enabled"
 zimbraFeatureTasksEnabled="Enabled"
 zimbraIPMode="ipv4"
 zimbraMailProxy="TRUE"
-zimbraMtaMyNetworks="127.0.0.0/8 [::1]/128 $CONTAINERNET/24 [fe80::]/64"
+zimbraMtaMyNetworks="127.0.0.0/8 [::1]/128 $CONTAINERIP/24 [fe80::]/64"
 zimbraPrefTimeZoneId="Africa/Nairobi"
 zimbraReverseProxyLookupTarget="TRUE"
 zimbraVersionCheckNotificationEmail="admin@$DOMAIN"

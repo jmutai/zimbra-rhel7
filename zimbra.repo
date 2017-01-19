@@ -2,4 +2,5 @@
 name=Zimbra RPM Repository
 gpgcheck=0
 baseurl=http://192.168.2.1/rhel-zcs/rhel7/
+# http://192.168.122.210:8090/rhel7/
 enabled=1

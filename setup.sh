@@ -1,7 +1,7 @@
 #!/usr/bin/bash
-export DOMAIN="zimbra.example.com"
+export HOSTNAME="mail.example.com"
 # Create directories for persistent storage
-mkdir -p /var/$DOMAIN/opt
+mkdir -p /var/$HOSTNAME/zimbra
 
 # Install packages needed
 yum -y install bash-completion \
@@ -16,9 +16,10 @@ libstdc++.so.6 \
 nmap-ncat \
 ntp \
 net-tools \
-openssh-clients \
+openssh-server \
 perl \
 perl-core \
+rsyslog \
 sqlite \
 sudo \
 sysstat \

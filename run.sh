@@ -18,7 +18,7 @@ docker run -d --privileged \
     -e DOMAIN="${CONT_DOMAIN}" \
     -e CONTAINERIP="${CONT_IP}" \
     -e NAME="${CONT_NAME}" \
-    -v /var/"${CONT_L_HOSTNAME}"/opt:/opt/zimbra  \
+    -v /var/"${CONT_L_HOSTNAME}"/zimbra:/opt/zimbra  \
     -v /etc/localtime:/etc/localtime:ro \
     -v /sys/fs/cgroup:/sys/fs/cgroup:ro \
     -v $(pwd)/zimbra.repo:/etc/yum.repos.d/zimbra.repo \

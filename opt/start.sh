@@ -1,4 +1,17 @@
 #!/bin/sh
+
+# Zimbra installation and configuration script
+
+echo "Enabling and starting sshd service"
+systemctl enable sshd
+systemctl start sshd
+
+echo "Starting and enabling rsyslog"
+sleep 5
+systemctl enable rsyslog
+systemctl start rsuslog
+
+echo "Generating some variables needed.."
 sleep 5
 RANDOMHAM=$(date +%s|sha256sum|base64|head -c 10)
 RANDOMSPAM=$(date +%s|sha256sum|base64|head -c 10)
@@ -39,7 +52,7 @@ touch /opt/zimbra-install/zimbra_install_config
 cat <<EOF >/opt/zimbra-install/zimbra_install_config
 AVDOMAIN="$DOMAIN"
 AVUSER="admin@$DOMAIN"
-CREATEADMIN="admin@$HOSTNAME.$DOMAIN"
+CREATEADMIN="admin@$DOMAIN"
 CREATEDOMAIN="$DOMAIN"
 CREATEADMINPASS="$PASSWORD"
 DOCREATEADMIN="yes"

@@ -1,6 +1,7 @@
 #!/usr/bin/bash
 export HOSTNAME="mail.example.com"
-# Create directories for persistent storage
+
+# Create directory for persistent storage
 mkdir -p /var/$HOSTNAME/zimbra
 
 # Install packages needed
